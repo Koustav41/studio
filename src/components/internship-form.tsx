@@ -26,6 +26,7 @@ import { Loader2, Search } from 'lucide-react';
 import { getRecommendedInternships } from '@/app/actions';
 import type { RankedInternshipWithDetails } from '@/lib/types';
 import { SECTORS } from '@/lib/constants';
+import { motion } from 'framer-motion';
 
 const formSchema = z.object({
   education: z.string().min(3, { message: 'Please enter your education level.' }),
@@ -142,14 +143,27 @@ export function InternshipForm({
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Search className="mr-2 h-4 w-4" />
-          )}
-          Find Internships
-        </Button>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          animate={{
+            scale: [1, 1.01, 1],
+            transition: {
+              duration: 2,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            },
+          }}
+        >
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Search className="mr-2 h-4 w-4" />
+            )}
+            Find Internships
+          </Button>
+        </motion.div>
       </form>
     </Form>
   );
