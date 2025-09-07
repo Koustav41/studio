@@ -27,14 +27,20 @@ import { getRecommendedInternships } from '@/app/actions';
 import type { RankedInternshipWithDetails } from '@/lib/types';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks/use-translation';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
-  education: z.string().min(3, { message: 'Please enter your education level.' }),
+  education: z
+    .string()
+    .min(3, { message: 'Please enter your education level.' }),
   skills: z.string().min(3, { message: 'Please list at least one skill.' }),
   sectorInterest: z.string({
     required_error: 'Please select a sector of interest.',
   }),
-  location: z.string().min(2, { message: 'Please enter your preferred city or region.' }),
+  location: z
+    .string()
+    .min(2, { message: 'Please enter your preferred city or region.' }),
 });
 
 type InternshipFormProps = {
@@ -51,6 +57,7 @@ export function InternshipForm({
   onLoading,
   isSubmitting,
 }: InternshipFormProps) {
+  const { t } = useTranslation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,6 +78,26 @@ export function InternshipForm({
     onResults(result);
   }
 
+  const formElements = {
+    'form-education-label': 'Education Level',
+    'form-education-placeholder': 'e.g., 12th Pass, B.A. Graduate',
+    'form-skills-label': 'Your Skills',
+    'form-skills-placeholder': 'e.g., communication, python, patient care',
+    'form-skills-description': 'List your skills, separated by commas.',
+    'form-sector-label': 'Sector of Interest',
+    'form-sector-placeholder': 'Select a sector',
+    'form-location-label': 'Preferred Location',
+    'form-location-placeholder': 'e.g., Delhi, Rural Bihar',
+    'form-submit-button': 'Find Internships',
+  };
+
+  useEffect(() => {
+    Object.entries(formElements).forEach(([key, value]) => {
+      t(value, key);
+    });
+  }, [t]);
+
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -79,9 +106,9 @@ export function InternshipForm({
           name="education"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Education Level</FormLabel>
+              <FormLabel>{t('form-education-label')}</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., 12th Pass, B.A. Graduate" {...field} />
+                <Input placeholder={t('form-education-placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,15 +119,15 @@ export function InternshipForm({
           name="skills"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your Skills</FormLabel>
+              <FormLabel>{t('form-skills-label')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="e.g., communication, python, patient care"
+                  placeholder={t('form-skills-placeholder')}
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                List your skills, separated by commas.
+                {t('form-skills-description')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -111,11 +138,11 @@ export function InternshipForm({
           name="sectorInterest"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Sector of Interest</FormLabel>
+              <FormLabel>{t('form-sector-label')}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a sector" />
+                    <SelectValue placeholder={t('form-sector-placeholder')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -135,9 +162,9 @@ export function InternshipForm({
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preferred Location</FormLabel>
+              <FormLabel>{t('form-location-label')}</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Delhi, Rural Bihar" {...field} />
+                <Input placeholder={t('form-location-placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -161,7 +188,7 @@ export function InternshipForm({
             ) : (
               <Search className="mr-2 h-4 w-4" />
             )}
-            Find Internships
+            {t('form-submit-button')}
           </Button>
         </motion.div>
       </form>

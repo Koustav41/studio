@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Header } from '@/components/header';
 import { InternshipForm } from '@/components/internship-form';
@@ -11,6 +11,10 @@ import { Lightbulb, Terminal } from 'lucide-react';
 import type { RankedInternshipWithDetails } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  TranslationProvider,
+  useTranslation,
+} from '@/hooks/use-translation';
 
 function ParallaxProvider({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);
@@ -21,10 +25,7 @@ function ParallaxProvider({ children }: { children: React.ReactNode }) {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   return (
-    <div
-      ref={ref}
-      className="relative"
-    >
+    <div ref={ref} className="relative">
       <motion.div
         className="absolute inset-0 z-[-1]"
         style={{
@@ -40,13 +41,15 @@ function ParallaxProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function Home() {
+function HomePageContent() {
   const [recommendations, setRecommendations] = useState<
     RankedInternshipWithDetails[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialState, setIsInitialState] = useState(true);
+
+  const { t, loading: isTranslating } = useTranslation();
 
   const handleResults = (data: {
     internships?: RankedInternshipWithDetails[];
@@ -68,6 +71,30 @@ export default function Home() {
     setError(null);
   };
 
+  const initialElements = {
+    'home-recommendations-title': 'Your Top Recommendations',
+    'home-recommendations-matches': (count: number) =>
+      `Showing ${count} best matches`,
+    'home-error-title': 'An Error Occurred',
+    'home-no-matches-title': 'No Matches Found',
+    'home-no-matches-description':
+      "We couldn't find any internships matching your profile. Try adjusting your skills or location.",
+    'home-initial-title': "Let's find your perfect internship!",
+    'home-initial-description':
+      'Fill out the form with your details, and our AI will suggest the best opportunities for you from the PM Internship Scheme.',
+  };
+
+  useEffect(() => {
+    Object.entries(initialElements).forEach(([key, value]) => {
+      if (typeof value === 'function') {
+        // We can't pre-translate functions with arguments, so we skip them.
+        // They will be translated on-demand.
+      } else {
+        t(value, key);
+      }
+    });
+  }, [t]);
+
   return (
     <ParallaxProvider>
       <div className="flex flex-col min-h-screen bg-background/80 backdrop-blur-sm">
@@ -88,11 +115,17 @@ export default function Home() {
             <div className="md:col-span-8 lg:col-span-9">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-foreground/90 font-headline">
-                  Your Top Recommendations
+                  {isTranslating && !t('home-recommendations-title') ? (
+                    <Skeleton className="h-9 w-72" />
+                  ) : (
+                    t('home-recommendations-title')
+                  )}
                 </h2>
                 {recommendations.length > 0 && (
                   <div className="text-sm font-medium text-primary">
-                    Showing {recommendations.length} best matches
+                    {t('home-recommendations-matches', {
+                      count: recommendations.length,
+                    })}
                   </div>
                 )}
               </div>
@@ -123,7 +156,7 @@ export default function Home() {
                 {!isLoading && error && (
                   <Alert variant="destructive">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>An Error Occurred</AlertTitle>
+                    <AlertTitle>{t('home-error-title')}</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
@@ -141,11 +174,10 @@ export default function Home() {
                         className="w-48 h-auto mb-4 rounded-lg"
                       />
                       <h3 className="text-xl font-semibold mb-2">
-                        No Matches Found
+                        {t('home-no-matches-title')}
                       </h3>
                       <p className="text-muted-foreground">
-                        We couldn't find any internships matching your profile.
-                        Try adjusting your skills or location.
+                        {t('home-no-matches-description')}
                       </p>
                     </Card>
                   )}
@@ -153,12 +185,21 @@ export default function Home() {
                   <Card className="flex flex-col items-center justify-center p-12 text-center bg-card/50 border-dashed">
                     <Lightbulb className="w-16 h-16 text-primary mb-4" />
                     <h3 className="text-xl font-semibold mb-2">
-                      Let's find your perfect internship!
+                      {isTranslating && !t('home-initial-title') ? (
+                         <Skeleton className="h-7 w-80" />
+                      ) : (
+                        t('home-initial-title')
+                      )}
                     </h3>
                     <p className="text-muted-foreground max-w-sm">
-                      Fill out the form with your details, and our AI will suggest
-                      the best opportunities for you from the PM Internship
-                      Scheme.
+                      {isTranslating && !t('home-initial-description') ? (
+                        <div className="space-y-2 mt-2">
+                          <Skeleton className="h-5 w-full" />
+                          <Skeleton className="h-5 w-3/4" />
+                        </div>
+                      ) : (
+                        t('home-initial-description')
+                      )}
                     </p>
                   </Card>
                 )}
@@ -168,5 +209,13 @@ export default function Home() {
         </main>
       </div>
     </ParallaxProvider>
+  );
+}
+
+export default function Home() {
+  return (
+    <TranslationProvider>
+      <HomePageContent />
+    </TranslationProvider>
   );
 }

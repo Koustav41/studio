@@ -11,6 +11,8 @@ import type { RankedInternshipWithDetails } from '@/lib/types';
 import { ArrowRight, Briefcase, MapPin, Sparkles } from 'lucide-react';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks/use-translation';
+import { useEffect } from 'react';
 
 type InternshipCardProps = {
   internship: RankedInternshipWithDetails;
@@ -21,11 +23,44 @@ const getSectorLabel = (sectorValue: string) => {
 };
 
 export function InternshipCard({ internship }: InternshipCardProps) {
+  const { t, loading } = useTranslation();
+
   const getRankBadgeVariant = (rank: number) => {
     if (rank > 7) return 'default';
     if (rank > 4) return 'secondary';
     return 'outline';
   };
+
+  const elements = {
+    [`internship-title-${internship.title}`]: internship.title,
+    [`internship-description-${internship.title}`]: internship.description,
+    [`internship-reason-${internship.title}`]: internship.reason,
+    'internship-rank-label': 'Rank',
+    'internship-good-match-label': "Why it's a good match:",
+    'internship-more-skills-label': (count: number) => `+${count} more`,
+    'internship-apply-button': 'Apply Now',
+  };
+
+  useEffect(() => {
+    Object.entries(elements).forEach(([key, value]) => {
+      if (typeof value !== 'function') {
+        t(value, key);
+      }
+    });
+  }, [t, internship.title]);
+
+  const translatedTitle = t(
+    elements[`internship-title-${internship.title}`],
+    `internship-title-${internship.title}`
+  );
+  const translatedDescription = t(
+    elements[`internship-description-${internship.title}`],
+    `internship-description-${internship.title}`
+  );
+  const translatedReason = t(
+    elements[`internship-reason-${internship.title}`],
+    `internship-reason-${internship.title}`
+  );
 
   return (
     <motion.div
@@ -39,7 +74,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="font-headline text-xl mb-1">
-                  {internship.title}
+                  {translatedTitle}
                 </CardTitle>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
@@ -56,21 +91,23 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                 variant={getRankBadgeVariant(internship.rank)}
                 className="whitespace-nowrap"
               >
-                Rank: {internship.rank}/10
+                {t('internship-rank-label')}: {internship.rank}/10
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-foreground/80 mb-4">
-              {internship.description}
+              {translatedDescription}
             </p>
             <div className="flex items-start gap-3 bg-primary/10 p-3 rounded-lg">
               <Sparkles className="h-5 w-5 text-primary mt-1 shrink-0" />
               <div>
                 <h4 className="font-semibold text-sm text-primary">
-                  Why it's a good match:
+                  {t('internship-good-match-label')}
                 </h4>
-                <p className="text-sm text-foreground/70">{internship.reason}</p>
+                <p className="text-sm text-foreground/70">
+                  {translatedReason}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -84,7 +121,9 @@ export function InternshipCard({ internship }: InternshipCardProps) {
             ))}
             {internship.skillsRequired.length > 3 && (
               <Badge variant="outline">
-                +{internship.skillsRequired.length - 3} more
+                {t('internship-more-skills-label', {
+                  count: internship.skillsRequired.length - 3,
+                })}
               </Badge>
             )}
           </div>
@@ -94,7 +133,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Apply Now
+              {t('internship-apply-button')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>
