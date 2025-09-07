@@ -12,55 +12,32 @@ import { ArrowRight, Briefcase, MapPin, Sparkles } from 'lucide-react';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/use-translation';
-import { useEffect } from 'react';
 
 type InternshipCardProps = {
   internship: RankedInternshipWithDetails;
 };
 
-const getSectorLabel = (sectorValue: string) => {
-  return SECTORS.find((s) => s.value === sectorValue)?.label || sectorValue;
+const getSectorLabel = (sectorValue: string, t: Function) => {
+  const sector = SECTORS.find((s) => s.value === sectorValue);
+  return sector ? t(sector.label, `sector-${sector.value}`) : sectorValue;
 };
 
 export function InternshipCard({ internship }: InternshipCardProps) {
-  const { t, loading } = useTranslation();
+  const { t } = useTranslation();
 
   const getRankBadgeVariant = (rank: number) => {
     if (rank > 7) return 'default';
     if (rank > 4) return 'secondary';
     return 'outline';
   };
-
-  const elements = {
-    [`internship-title-${internship.title}`]: internship.title,
-    [`internship-description-${internship.title}`]: internship.description,
-    [`internship-reason-${internship.title}`]: internship.reason,
-    'internship-rank-label': 'Rank',
-    'internship-good-match-label': "Why it's a good match:",
-    'internship-more-skills-label': (count: number) => `+${count} more`,
-    'internship-apply-button': 'Apply Now',
-  };
-
-  useEffect(() => {
-    Object.entries(elements).forEach(([key, value]) => {
-      if (typeof value !== 'function') {
-        t(value, key);
-      }
-    });
-  }, [t, internship.title]);
-
-  const translatedTitle = t(
-    elements[`internship-title-${internship.title}`],
-    `internship-title-${internship.title}`
-  );
-  const translatedDescription = t(
-    elements[`internship-description-${internship.title}`],
-    `internship-description-${internship.title}`
-  );
-  const translatedReason = t(
-    elements[`internship-reason-${internship.title}`],
-    `internship-reason-${internship.title}`
-  );
+  
+  const translatedTitle = t(internship.title, `internship-title-${internship.title}`);
+  const translatedDescription = t(internship.description, `internship-description-${internship.title}`);
+  const translatedReason = t(internship.reason, `internship-reason-${internship.title}`);
+  const rankLabel = t('Rank', 'internship-rank-label');
+  const goodMatchLabel = t("Why it's a good match:", 'internship-good-match-label');
+  const applyButtonText = t('Apply Now', 'internship-apply-button');
+  const moreSkillsLabel = (count: number) => t(`+${count} more`, 'internship-more-skills-label', { count });
 
   return (
     <motion.div
@@ -79,7 +56,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <Briefcase className="h-4 w-4" />
-                    <span>{getSectorLabel(internship.sector)}</span>
+                    <span>{getSectorLabel(internship.sector, t)}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <MapPin className="h-4 w-4" />
@@ -91,7 +68,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                 variant={getRankBadgeVariant(internship.rank)}
                 className="whitespace-nowrap"
               >
-                {t('internship-rank-label')}: {internship.rank}/10
+                {rankLabel}: {internship.rank}/10
               </Badge>
             </div>
           </CardHeader>
@@ -103,7 +80,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
               <Sparkles className="h-5 w-5 text-primary mt-1 shrink-0" />
               <div>
                 <h4 className="font-semibold text-sm text-primary">
-                  {t('internship-good-match-label')}
+                  {goodMatchLabel}
                 </h4>
                 <p className="text-sm text-foreground/70">
                   {translatedReason}
@@ -121,9 +98,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
             ))}
             {internship.skillsRequired.length > 3 && (
               <Badge variant="outline">
-                {t('internship-more-skills-label', {
-                  count: internship.skillsRequired.length - 3,
-                })}
+                {moreSkillsLabel(internship.skillsRequired.length - 3)}
               </Badge>
             )}
           </div>
@@ -133,7 +108,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t('internship-apply-button')}
+              {applyButtonText}
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>

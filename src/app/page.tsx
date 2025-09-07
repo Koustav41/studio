@@ -70,30 +70,16 @@ function HomePageContent() {
     setIsLoading(true);
     setError(null);
   };
+  
+  const recommendationsTitle = t('Your Top Recommendations', 'home-recommendations-title');
+  const errorTitle = t('An Error Occurred', 'home-error-title');
+  const noMatchesTitle = t('No Matches Found', 'home-no-matches-title');
+  const noMatchesDescription = t("We couldn't find any internships matching your profile. Try adjusting your skills or location.", 'home-no-matches-description');
+  const initialTitle = t("Let's find your perfect internship!", 'home-initial-title');
+  const initialDescription = t('Fill out the form with your details, and our AI will suggest the best opportunities for you from the PM Internship Scheme.', 'home-initial-description');
 
-  const initialElements = {
-    'home-recommendations-title': 'Your Top Recommendations',
-    'home-recommendations-matches': (count: number) =>
-      `Showing ${count} best matches`,
-    'home-error-title': 'An Error Occurred',
-    'home-no-matches-title': 'No Matches Found',
-    'home-no-matches-description':
-      "We couldn't find any internships matching your profile. Try adjusting your skills or location.",
-    'home-initial-title': "Let's find your perfect internship!",
-    'home-initial-description':
-      'Fill out the form with your details, and our AI will suggest the best opportunities for you from the PM Internship Scheme.',
-  };
+  const recommendationsMatches = (count: number) => t(`Showing ${count} best matches`, 'home-recommendations-matches', {count});
 
-  useEffect(() => {
-    Object.entries(initialElements).forEach(([key, value]) => {
-      if (typeof value === 'function') {
-        // We can't pre-translate functions with arguments, so we skip them.
-        // They will be translated on-demand.
-      } else {
-        t(value, key);
-      }
-    });
-  }, [t]);
 
   return (
     <ParallaxProvider>
@@ -115,17 +101,15 @@ function HomePageContent() {
             <div className="md:col-span-8 lg:col-span-9">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-foreground/90 font-headline">
-                  {isTranslating && !t('home-recommendations-title') ? (
+                  {isTranslating && recommendationsTitle === 'Your Top Recommendations' ? (
                     <Skeleton className="h-9 w-72" />
                   ) : (
-                    t('home-recommendations-title')
+                    recommendationsTitle
                   )}
                 </h2>
                 {recommendations.length > 0 && (
                   <div className="text-sm font-medium text-primary">
-                    {t('home-recommendations-matches', {
-                      count: recommendations.length,
-                    })}
+                    {recommendationsMatches(recommendations.length)}
                   </div>
                 )}
               </div>
@@ -156,7 +140,7 @@ function HomePageContent() {
                 {!isLoading && error && (
                   <Alert variant="destructive">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>{t('home-error-title')}</AlertTitle>
+                    <AlertTitle>{errorTitle}</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
@@ -174,10 +158,10 @@ function HomePageContent() {
                         className="w-48 h-auto mb-4 rounded-lg"
                       />
                       <h3 className="text-xl font-semibold mb-2">
-                        {t('home-no-matches-title')}
+                        {noMatchesTitle}
                       </h3>
                       <p className="text-muted-foreground">
-                        {t('home-no-matches-description')}
+                        {noMatchesDescription}
                       </p>
                     </Card>
                   )}
@@ -185,20 +169,20 @@ function HomePageContent() {
                   <Card className="flex flex-col items-center justify-center p-12 text-center bg-card/50 border-dashed">
                     <Lightbulb className="w-16 h-16 text-primary mb-4" />
                     <h3 className="text-xl font-semibold mb-2">
-                      {isTranslating && !t('home-initial-title') ? (
+                      {isTranslating && initialTitle === "Let's find your perfect internship!" ? (
                          <Skeleton className="h-7 w-80" />
                       ) : (
-                        t('home-initial-title')
+                        initialTitle
                       )}
                     </h3>
                     <p className="text-muted-foreground max-w-sm">
-                      {isTranslating && !t('home-initial-description') ? (
+                      {isTranslating && initialDescription.startsWith('Fill out the form') ? (
                         <div className="space-y-2 mt-2">
                           <Skeleton className="h-5 w-full" />
                           <Skeleton className="h-5 w-3/4" />
                         </div>
                       ) : (
-                        t('home-initial-description')
+                        initialDescription
                       )}
                     </p>
                   </Card>

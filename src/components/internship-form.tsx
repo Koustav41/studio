@@ -28,7 +28,6 @@ import type { RankedInternshipWithDetails } from '@/lib/types';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks/use-translation';
-import { useEffect } from 'react';
 
 const formSchema = z.object({
   education: z
@@ -78,26 +77,6 @@ export function InternshipForm({
     onResults(result);
   }
 
-  const formElements = {
-    'form-education-label': 'Education Level',
-    'form-education-placeholder': 'e.g., 12th Pass, B.A. Graduate',
-    'form-skills-label': 'Your Skills',
-    'form-skills-placeholder': 'e.g., communication, python, patient care',
-    'form-skills-description': 'List your skills, separated by commas.',
-    'form-sector-label': 'Sector of Interest',
-    'form-sector-placeholder': 'Select a sector',
-    'form-location-label': 'Preferred Location',
-    'form-location-placeholder': 'e.g., Delhi, Rural Bihar',
-    'form-submit-button': 'Find Internships',
-  };
-
-  useEffect(() => {
-    Object.entries(formElements).forEach(([key, value]) => {
-      t(value, key);
-    });
-  }, [t]);
-
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -106,9 +85,9 @@ export function InternshipForm({
           name="education"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('form-education-label')}</FormLabel>
+              <FormLabel>{t('Education Level', 'form-education-label')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('form-education-placeholder')} {...field} />
+                <Input placeholder={t('e.g., 12th Pass, B.A. Graduate', 'form-education-placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -119,15 +98,15 @@ export function InternshipForm({
           name="skills"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('form-skills-label')}</FormLabel>
+              <FormLabel>{t('Your Skills', 'form-skills-label')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder={t('form-skills-placeholder')}
+                  placeholder={t('e.g., communication, python, patient care', 'form-skills-placeholder')}
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                {t('form-skills-description')}
+                {t('List your skills, separated by commas.', 'form-skills-description')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -138,17 +117,17 @@ export function InternshipForm({
           name="sectorInterest"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('form-sector-label')}</FormLabel>
+              <FormLabel>{t('Sector of Interest', 'form-sector-label')}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('form-sector-placeholder')} />
+                    <SelectValue placeholder={t('Select a sector', 'form-sector-placeholder')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {SECTORS.map((sector) => (
                     <SelectItem key={sector.value} value={sector.value}>
-                      {sector.label}
+                      {t(sector.label, `sector-${sector.value}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -162,9 +141,9 @@ export function InternshipForm({
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('form-location-label')}</FormLabel>
+              <FormLabel>{t('Preferred Location', 'form-location-label')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('form-location-placeholder')} {...field} />
+                <Input placeholder={t('e.g., Delhi, Rural Bihar', 'form-location-placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -188,7 +167,7 @@ export function InternshipForm({
             ) : (
               <Search className="mr-2 h-4 w-4" />
             )}
-            {t('form-submit-button')}
+            {t('Find Internships', 'form-submit-button')}
           </Button>
         </motion.div>
       </form>
