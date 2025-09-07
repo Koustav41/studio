@@ -11,19 +11,17 @@ import type { RankedInternshipWithDetails } from '@/lib/types';
 import { ArrowRight, Briefcase, MapPin, Sparkles } from 'lucide-react';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/hooks/use-translation';
 
 type InternshipCardProps = {
   internship: RankedInternshipWithDetails;
 };
 
-const getSectorLabel = (sectorValue: string, t: Function) => {
+const getSectorLabel = (sectorValue: string) => {
   const sector = SECTORS.find((s) => s.value === sectorValue);
-  return sector ? t(sector.label, `sector-${sector.value}`) : sectorValue;
+  return sector ? sector.label : sectorValue;
 };
 
 export function InternshipCard({ internship }: InternshipCardProps) {
-  const { t } = useTranslation();
 
   const getRankBadgeVariant = (rank: number) => {
     if (rank > 7) return 'default';
@@ -31,13 +29,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
     return 'outline';
   };
   
-  const translatedTitle = t(internship.title, `internship-title-${internship.title}`);
-  const translatedDescription = t(internship.description, `internship-description-${internship.title}`);
-  const translatedReason = t(internship.reason, `internship-reason-${internship.title}`);
-  const rankLabel = t('Rank', 'internship-rank-label');
-  const goodMatchLabel = t("Why it's a good match:", 'internship-good-match-label');
-  const applyButtonText = t('Apply Now', 'internship-apply-button');
-  const moreSkillsLabel = (count: number) => t(`+${count} more`, 'internship-more-skills-label', { count });
+  const moreSkillsLabel = (count: number) => `+${count} more`;
 
   return (
     <motion.div
@@ -51,12 +43,12 @@ export function InternshipCard({ internship }: InternshipCardProps) {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="font-headline text-xl mb-1">
-                  {translatedTitle}
+                  {internship.title}
                 </CardTitle>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <Briefcase className="h-4 w-4" />
-                    <span>{getSectorLabel(internship.sector, t)}</span>
+                    <span>{getSectorLabel(internship.sector)}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <MapPin className="h-4 w-4" />
@@ -68,22 +60,22 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                 variant={getRankBadgeVariant(internship.rank)}
                 className="whitespace-nowrap"
               >
-                {rankLabel}: {internship.rank}/10
+                Rank: {internship.rank}/10
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-foreground/80 mb-4">
-              {translatedDescription}
+              {internship.description}
             </p>
             <div className="flex items-start gap-3 bg-primary/10 p-3 rounded-lg">
               <Sparkles className="h-5 w-5 text-primary mt-1 shrink-0" />
               <div>
                 <h4 className="font-semibold text-sm text-primary">
-                  {goodMatchLabel}
+                  Why it's a good match:
                 </h4>
                 <p className="text-sm text-foreground/70">
-                  {translatedReason}
+                  {internship.reason}
                 </p>
               </div>
             </div>
@@ -108,7 +100,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {applyButtonText}
+              Apply Now
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>
           </Button>

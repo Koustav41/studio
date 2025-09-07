@@ -11,10 +11,6 @@ import { Lightbulb, Terminal } from 'lucide-react';
 import type { RankedInternshipWithDetails } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import {
-  TranslationProvider,
-  useTranslation,
-} from '@/hooks/use-translation';
 
 function ParallaxProvider({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);
@@ -41,15 +37,13 @@ function ParallaxProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-function HomePageContent() {
+export default function Home() {
   const [recommendations, setRecommendations] = useState<
     RankedInternshipWithDetails[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialState, setIsInitialState] = useState(true);
-
-  const { t, loading: isTranslating } = useTranslation();
 
   const handleResults = (data: {
     internships?: RankedInternshipWithDetails[];
@@ -70,16 +64,6 @@ function HomePageContent() {
     setIsLoading(true);
     setError(null);
   };
-  
-  const recommendationsTitle = t('Your Top Recommendations', 'home-recommendations-title');
-  const errorTitle = t('An Error Occurred', 'home-error-title');
-  const noMatchesTitle = t('No Matches Found', 'home-no-matches-title');
-  const noMatchesDescription = t("We couldn't find any internships matching your profile. Try adjusting your skills or location.", 'home-no-matches-description');
-  const initialTitle = t("Let's find your perfect internship!", 'home-initial-title');
-  const initialDescription = t('Fill out the form with your details, and our AI will suggest the best opportunities for you from the PM Internship Scheme.', 'home-initial-description');
-
-  const recommendationsMatches = (count: number) => t(`Showing ${count} best matches`, 'home-recommendations-matches', {count});
-
 
   return (
     <ParallaxProvider>
@@ -101,15 +85,11 @@ function HomePageContent() {
             <div className="md:col-span-8 lg:col-span-9">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-foreground/90 font-headline">
-                  {isTranslating && recommendationsTitle === 'Your Top Recommendations' ? (
-                    <Skeleton className="h-9 w-72" />
-                  ) : (
-                    recommendationsTitle
-                  )}
+                  Your Top Recommendations
                 </h2>
                 {recommendations.length > 0 && (
                   <div className="text-sm font-medium text-primary">
-                    {recommendationsMatches(recommendations.length)}
+                    Showing {recommendations.length} best matches
                   </div>
                 )}
               </div>
@@ -140,7 +120,7 @@ function HomePageContent() {
                 {!isLoading && error && (
                   <Alert variant="destructive">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>{errorTitle}</AlertTitle>
+                    <AlertTitle>An Error Occurred</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
@@ -158,10 +138,10 @@ function HomePageContent() {
                         className="w-48 h-auto mb-4 rounded-lg"
                       />
                       <h3 className="text-xl font-semibold mb-2">
-                        {noMatchesTitle}
+                        No Matches Found
                       </h3>
                       <p className="text-muted-foreground">
-                        {noMatchesDescription}
+                        We couldn't find any internships matching your profile. Try adjusting your skills or location.
                       </p>
                     </Card>
                   )}
@@ -169,21 +149,10 @@ function HomePageContent() {
                   <Card className="flex flex-col items-center justify-center p-12 text-center bg-card/50 border-dashed">
                     <Lightbulb className="w-16 h-16 text-primary mb-4" />
                     <h3 className="text-xl font-semibold mb-2">
-                      {isTranslating && initialTitle === "Let's find your perfect internship!" ? (
-                         <Skeleton className="h-7 w-80" />
-                      ) : (
-                        initialTitle
-                      )}
+                      Let's find your perfect internship!
                     </h3>
                     <p className="text-muted-foreground max-w-sm">
-                      {isTranslating && initialDescription.startsWith('Fill out the form') ? (
-                        <div className="space-y-2 mt-2">
-                          <Skeleton className="h-5 w-full" />
-                          <Skeleton className="h-5 w-3/4" />
-                        </div>
-                      ) : (
-                        initialDescription
-                      )}
+                      Fill out the form with your details, and our AI will suggest the best opportunities for you from the PM Internship Scheme.
                     </p>
                   </Card>
                 )}
@@ -193,13 +162,5 @@ function HomePageContent() {
         </main>
       </div>
     </ParallaxProvider>
-  );
-}
-
-export default function Home() {
-  return (
-    <TranslationProvider>
-      <HomePageContent />
-    </TranslationProvider>
   );
 }

@@ -1,17 +1,6 @@
-import { Compass, Languages } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { useTranslation } from '@/hooks/use-translation';
+import { Compass } from 'lucide-react';
 
 export function Header() {
-  const { availableLanguages, currentLanguage, changeLanguage, loading } =
-    useTranslation();
-
   return (
     <header className="bg-card shadow-md">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
@@ -25,25 +14,6 @@ export function Header() {
               Your Guide to the PM Internship Scheme
             </p>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Languages className="h-5 w-5 text-muted-foreground" />
-          <Select
-            onValueChange={changeLanguage}
-            defaultValue={currentLanguage}
-            disabled={loading}
-          >
-            <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Language" />
-            </SelectTrigger>
-            <SelectContent>
-              {availableLanguages.map((lang) => (
-                <SelectItem key={lang.code} value={lang.code}>
-                  {lang.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
     </header>

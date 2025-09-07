@@ -27,7 +27,6 @@ import { getRecommendedInternships } from '@/app/actions';
 import type { RankedInternshipWithDetails } from '@/lib/types';
 import { SECTORS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { useTranslation } from '@/hooks/use-translation';
 
 const formSchema = z.object({
   education: z
@@ -56,7 +55,6 @@ export function InternshipForm({
   onLoading,
   isSubmitting,
 }: InternshipFormProps) {
-  const { t } = useTranslation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,9 +83,9 @@ export function InternshipForm({
           name="education"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('Education Level', 'form-education-label')}</FormLabel>
+              <FormLabel>Education Level</FormLabel>
               <FormControl>
-                <Input placeholder={t('e.g., 12th Pass, B.A. Graduate', 'form-education-placeholder')} {...field} />
+                <Input placeholder={'e.g., 12th Pass, B.A. Graduate'} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,15 +96,15 @@ export function InternshipForm({
           name="skills"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('Your Skills', 'form-skills-label')}</FormLabel>
+              <FormLabel>Your Skills</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder={t('e.g., communication, python, patient care', 'form-skills-placeholder')}
+                  placeholder={'e.g., communication, python, patient care'}
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                {t('List your skills, separated by commas.', 'form-skills-description')}
+                List your skills, separated by commas.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -117,17 +115,17 @@ export function InternshipForm({
           name="sectorInterest"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('Sector of Interest', 'form-sector-label')}</FormLabel>
+              <FormLabel>Sector of Interest</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('Select a sector', 'form-sector-placeholder')} />
+                    <SelectValue placeholder={'Select a sector'} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {SECTORS.map((sector) => (
                     <SelectItem key={sector.value} value={sector.value}>
-                      {t(sector.label, `sector-${sector.value}`)}
+                      {sector.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -141,9 +139,9 @@ export function InternshipForm({
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('Preferred Location', 'form-location-label')}</FormLabel>
+              <FormLabel>Preferred Location</FormLabel>
               <FormControl>
-                <Input placeholder={t('e.g., Delhi, Rural Bihar', 'form-location-placeholder')} {...field} />
+                <Input placeholder={'e.g., Delhi, Rural Bihar'} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -167,7 +165,7 @@ export function InternshipForm({
             ) : (
               <Search className="mr-2 h-4 w-4" />
             )}
-            {t('Find Internships', 'form-submit-button')}
+            Find Internships
           </Button>
         </motion.div>
       </form>
