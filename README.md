@@ -1,5 +1,3 @@
-# Firebase Studio
+# Internship Compass
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
+An AI-Based Internship Recommendation Engine to help candidates find the most relevant internships based on their profile.
