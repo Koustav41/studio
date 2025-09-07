@@ -8,102 +8,90 @@ export const SECTORS = [
   { value: 'agriculture', label: 'Agriculture' },
   { value: 'manufacturing', label: 'Manufacturing' },
   { value: 'social_sector', label: 'Social Sector' },
+  { value: 'infrastructure', label: 'Infrastructure' },
+  { value: 'textiles', label: 'Textiles' },
+  { value: 'tourism', label: 'Tourism' },
 ];
 
 export const INTERNSHIPS: Internship[] = [
   {
-    title: 'Frontend Developer Intern',
+    title: 'Digital India Intern',
     description:
-      'Work on our main website using React and Next.js. A great opportunity to learn modern web development.',
+      'Contribute to the Digital India mission by working on a project to improve digital literacy in rural areas. Strong communication skills required.',
     sector: 'technology',
-    location: 'Bangalore',
-    skillsRequired: ['react', 'javascript', 'css', 'html'],
+    location: 'Various Rural Districts',
+    skillsRequired: ['communication', 'project management', 'community outreach'],
   },
   {
-    title: 'Data Science Intern',
+    title: 'Ayushman Bharat Health Data Analyst',
     description:
-      'Analyze user data to find insights and help improve our product. Requires knowledge of Python and SQL.',
-    sector: 'technology',
-    location: 'Mumbai',
-    skillsRequired: ['python', 'sql', 'data analysis', 'machine learning'],
-  },
-  {
-    title: 'Digital Marketing Intern',
-    description:
-      'Help manage our social media channels and create engaging content for our audience.',
-    sector: 'technology',
-    location: 'Delhi',
-    skillsRequired: ['social media', 'content creation', 'marketing'],
-  },
-  {
-    title: 'Nursing Assistant',
-    description:
-      'Assist nurses in a busy hospital environment. Gain hands-on experience in patient care.',
+      'Analyze health data from the Ayushman Bharat scheme to identify trends and inform public health policy. Requires knowledge of data analysis tools.',
     sector: 'healthcare',
-    location: 'Chennai',
-    skillsRequired: ['patient care', 'communication'],
+    location: 'New Delhi',
+    skillsRequired: ['data analysis', 'statistics', 'python', 'public health'],
   },
   {
-    title: 'Medical Research Assistant',
+    title: 'Jan Dhan Yojana Financial Inclusion Intern',
     description:
-      'Support a research team in a leading medical institute. A background in biology or chemistry is preferred.',
-    sector: 'healthcare',
-    location: 'Delhi',
-    skillsRequired: ['research', 'biology', 'lab work'],
-  },
-  {
-    title: 'Financial Analyst Intern',
-    description:
-      'Learn about financial modeling and investment analysis at a leading investment firm.',
+      'Work with a national bank to promote financial literacy and expand the reach of the Jan Dhan Yojana scheme in underserved communities.',
     sector: 'finance',
     location: 'Mumbai',
-    skillsRequired: ['excel', 'finance', 'analytical skills'],
+    skillsRequired: ['finance', 'community work', 'communication'],
   },
   {
-    title: 'Rural Teaching Fellow',
+    title: 'NEP 2020 Implementation Assistant',
     description:
-      'Teach primary school children in a rural village. A rewarding experience for those passionate about education.',
-    sector: 'education',
-    location: 'Rural Bihar',
-    skillsRequired: ['teaching', 'communication', 'patience'],
-  },
-  {
-    title: 'EdTech Content Creator',
-    description: 'Develop educational materials for our online learning platform.',
+      'Support the rollout of the National Education Policy 2020 by developing new curriculum frameworks and training materials for teachers.',
     sector: 'education',
     location: 'Bangalore',
-    skillsRequired: ['content creation', 'teaching', 'video editing'],
+    skillsRequired: ['education policy', 'content creation', 'teaching'],
   },
   {
-    title: 'Agricultural Extension Intern',
+    title: 'Soil Health Card Scheme Field Intern',
     description:
-      'Work with farmers to introduce modern farming techniques. Based in a tribal district.',
+      'Work directly with farmers to collect soil samples, interpret results from the Soil Health Card scheme, and recommend appropriate crop and nutrient management.',
     sector: 'agriculture',
-    location: 'Tribal Jharkhand',
-    skillsRequired: ['agriculture', 'communication', 'community work'],
+    location: 'Rural Punjab',
+    skillsRequired: ['agriculture', 'soil science', 'communication'],
   },
   {
-    title: 'Social Work Intern',
+    title: 'Make in India Manufacturing Analyst',
     description:
-      'Work with an NGO to support underprivileged communities in urban slums.',
-    sector: 'social_sector',
-    location: 'Urban Slum Mumbai',
-    skillsRequired: ['social work', 'empathy', 'communication'],
-  },
-  {
-    title: 'Supply Chain Intern',
-    description:
-      'Learn the ins and outs of logistics and supply chain management at a large manufacturing plant.',
+      'Analyze manufacturing data to identify opportunities for process improvement and support the goals of the Make in India initiative.',
     sector: 'manufacturing',
-    location: 'Pune',
-    skillsRequired: ['logistics', 'planning', 'excel'],
+    location: 'Chennai',
+    skillsRequired: ['data analysis', 'industrial engineering', 'process improvement'],
   },
   {
-    title: 'Community Health Worker',
+    title: 'Swachh Bharat Mission Coordinator',
     description:
-      'Promote health and wellness in remote communities. Involves travel to tribal areas.',
+      'Coordinate and monitor sanitation and waste management projects as part of the Swachh Bharat Mission in an urban municipality.',
     sector: 'social_sector',
-    location: 'Tribal Odisha',
-    skillsRequired: ['public health', 'communication', 'community outreach'],
+    location: 'Indore',
+    skillsRequired: ['project management', 'social work', 'community outreach'],
+  },
+  {
+    title: 'Smart Cities Mission Urban Planner',
+    description:
+      'Assist in the planning and design of smart infrastructure projects, including public transit and green spaces, for a designated Smart City.',
+    sector: 'infrastructure',
+    location: 'Pune',
+    skillsRequired: ['urban planning', 'autocad', 'gis'],
+  },
+  {
+    title: 'Handloom Weavers Support Intern',
+    description:
+      'Work with a textile cooperative to improve market linkages and provide design support for traditional handloom weavers.',
+    sector: 'textiles',
+    location: 'Varanasi',
+    skillsRequired: ['textile design', 'marketing', 'supply chain'],
+  },
+  {
+    title: 'Incredible India Tourism Promoter',
+    description:
+      'Develop digital marketing campaigns and content to promote tourism for a specific state or cultural heritage site under the Incredible India campaign.',
+    sector: 'tourism',
+    location: 'Jaipur',
+    skillsRequired: ['digital marketing', 'content creation', 'social media'],
   },
 ];
