@@ -1,6 +1,7 @@
 'use server';
 
 import { rankInternships, type RankInternshipsInput } from '@/ai/flows/rank-internships';
+import { translateText, type TranslateTextInput, type TranslateTextOutput } from '@/ai/flows/translate-text';
 import { INTERNSHIPS } from '@/lib/constants';
 import type { RankedInternshipWithDetails, Internship } from '@/lib/types';
 
@@ -49,4 +50,8 @@ export async function getRecommendedInternships(data: {
       error: 'An unexpected error occurred while fetching recommendations.',
     };
   }
+}
+
+export async function translate(data: TranslateTextInput): Promise<TranslateTextOutput> {
+    return await translateText(data);
 }

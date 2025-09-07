@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
+import { TranslationProvider } from '@/contexts/translation-context';
 
 export const metadata: Metadata = {
   title: 'Internship Compass',
@@ -28,8 +29,10 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('font-body antialiased min-h-screen bg-background')}>
-        {children}
-        <Toaster />
+        <TranslationProvider>
+          {children}
+          <Toaster />
+        </TranslationProvider>
       </body>
     </html>
   );

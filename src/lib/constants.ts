@@ -13,6 +13,17 @@ export const SECTORS = [
   { value: 'tourism', label: 'Tourism' },
 ];
 
+export const LANGUAGES = [
+  { value: 'en', label: 'English' },
+  { value: 'hi', label: 'Hindi' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'fr', label: 'French' },
+  { value: 'de', label: 'German' },
+  { value: 'bn', label: 'Bengali' },
+  { value: 'ta', label: 'Tamil' },
+  { value: 'te', label: 'Telugu' },
+];
+
 export const INTERNSHIPS: Internship[] = [
   {
     title: 'Digital India Intern',

@@ -1,4 +1,5 @@
 import { Compass } from 'lucide-react';
+import { LanguageSelector } from '@/components/language-selector';
 
 export function Header() {
   return (
@@ -15,6 +16,7 @@ export function Header() {
             </p>
           </div>
         </div>
+        <LanguageSelector />
       </div>
     </header>
   );
