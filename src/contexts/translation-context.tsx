@@ -29,7 +29,6 @@ const EXCLUDED_TAGS = new Set([
   'INPUT',
   'SELECT',
 ]);
-const DYNAMIC_CONTENT_ATTR = 'data-dynamic-content';
 
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -39,6 +38,11 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [originalTexts, setOriginalTexts] = useState<Map<Node, string>>(
     new Map()
   );
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const collectTextNodes = useCallback((root: HTMLElement) => {
     const texts = new Map<Node, string>();
@@ -74,7 +78,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const changeLanguage = useCallback(
     async (newLanguage: string) => {
-      if (newLanguage === currentLanguage) return;
+      if (!isMounted || newLanguage === currentLanguage) return;
 
       startTransition(() => {
         setIsTranslating(true);
@@ -129,6 +133,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     },
     [
+      isMounted,
       currentLanguage,
       collectTextNodes,
       restoreOriginalTexts,
@@ -136,26 +141,6 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
     ]
   );
   
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      if (currentLanguage !== 'en') {
-         // A simple way to re-apply translation on DOM changes.
-         // This is a basic implementation and might have performance implications
-         // on very dynamic pages. A more robust solution would be more granular.
-        changeLanguage(currentLanguage);
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      characterData: false, // Don't observe text changes we are making
-    });
-
-    return () => observer.disconnect();
-  }, [currentLanguage, changeLanguage]);
-
-
   const value = useMemo(
     () => ({ currentLanguage, changeLanguage, isTranslating }),
     [currentLanguage, changeLanguage, isTranslating]
