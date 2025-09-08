@@ -1,4 +1,4 @@
-import { Chrome } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { LanguageSelector } from '@/components/language-selector';
 
 export function Header() {
@@ -6,7 +6,7 @@ export function Header() {
     <header className="bg-card shadow-md">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Chrome className="h-10 w-10 text-primary" />
+          <Compass className="h-10 w-10 text-primary" />
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-primary font-headline">
               Internship Compass
