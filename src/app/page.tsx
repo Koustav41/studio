@@ -37,6 +37,16 @@ function ParallaxProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+const cardContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 export default function Home() {
   const [recommendations, setRecommendations] = useState<
     RankedInternshipWithDetails[]
@@ -72,7 +82,7 @@ export default function Home() {
         <main className="flex-1 container mx-auto px-4 py-8 md:py-12">
           <div className="grid gap-8 md:grid-cols-12">
             <div className="md:col-span-4 lg:col-span-3">
-              <Card className="shadow-lg">
+              <Card className="shadow-lg bg-card/80 backdrop-blur-lg border-white/20">
                 <CardContent className="p-6">
                   <InternshipForm
                     onResults={handleResults}
@@ -94,7 +104,12 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                variants={cardContainerVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 {isLoading &&
                   Array.from({ length: 3 }).map((_, i) => (
                     <Card key={i}>
@@ -128,7 +143,7 @@ export default function Home() {
                   !error &&
                   recommendations.length === 0 &&
                   !isInitialState && (
-                    <Card className="flex flex-col items-center justify-center p-12 text-center">
+                    <Card className="flex flex-col items-center justify-center p-12 text-center bg-card/80 backdrop-blur-lg border-white/20">
                       <Image
                         src="https://picsum.photos/300/200"
                         data-ai-hint="empty state search"
@@ -147,7 +162,19 @@ export default function Home() {
                   )}
                 {isInitialState && (
                   <Card className="flex flex-col items-center justify-center p-12 text-center bg-card/50 border-dashed">
-                    <Lightbulb className="w-16 h-16 text-primary mb-4" />
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.7, 1, 0.7],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    >
+                      <Lightbulb className="w-16 h-16 text-primary mb-4" />
+                    </motion.div>
                     <h3 className="text-xl font-semibold mb-2">
                       Let's find your perfect internship!
                     </h3>
@@ -156,7 +183,7 @@ export default function Home() {
                     </p>
                   </Card>
                 )}
-              </div>
+              </motion.div>
             </div>
           </div>
         </main>

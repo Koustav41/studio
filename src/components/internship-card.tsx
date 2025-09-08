@@ -16,28 +16,40 @@ type InternshipCardProps = {
   internship: RankedInternshipWithDetails;
 };
 
+const cardVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+    },
+  },
+};
+
 const getSectorLabel = (sectorValue: string) => {
   const sector = SECTORS.find((s) => s.value === sectorValue);
   return sector ? sector.label : sectorValue;
 };
 
 export function InternshipCard({ internship }: InternshipCardProps) {
-
   const getRankBadgeVariant = (rank: number) => {
     if (rank > 7) return 'default';
     if (rank > 4) return 'secondary';
     return 'outline';
   };
-  
+
   const moreSkillsLabel = (count: number) => `+${count} more`;
 
   return (
     <motion.div
+      variants={cardVariants}
       whileHover={{ scale: 1.02, y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
       className="h-full"
     >
-      <Card className="transition-shadow duration-300 h-full flex flex-col justify-between">
+      <Card className="transition-all duration-300 h-full flex flex-col justify-between shadow-lg hover:shadow-2xl bg-card/80 backdrop-blur-lg border-white/20">
         <div>
           <CardHeader>
             <div className="flex justify-between items-start">

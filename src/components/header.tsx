@@ -3,7 +3,7 @@ import { LanguageSelector } from '@/components/language-selector';
 
 export function Header() {
   return (
-    <header className="bg-card shadow-md">
+    <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-lg border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Compass className="h-10 w-10 text-primary" />
