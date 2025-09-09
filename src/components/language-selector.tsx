@@ -14,6 +14,15 @@ import { LANGUAGES } from '@/lib/constants';
 
 export function LanguageSelector() {
   const { changeLanguage, currentLanguage, isTranslating } = useTranslation();
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Don't render on the server
+  }
 
   return (
     <div className="flex items-center gap-2">
