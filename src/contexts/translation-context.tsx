@@ -78,7 +78,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const changeLanguage = useCallback(
     async (newLanguage: string) => {
-      if (newLanguage === currentLanguage) return;
+      if (newLanguage === currentLanguage || !isMounted) return;
 
       startTransition(() => {
         setIsTranslating(true);
@@ -102,7 +102,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
         restoreOriginalTexts();
         textsToTranslateMap = originalTexts;
       }
-
+      
       const texts = Array.from(textsToTranslateMap.values());
       if (texts.length === 0) {
         setCurrentLanguage(newLanguage);
@@ -138,18 +138,13 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
       collectTextNodes,
       restoreOriginalTexts,
       originalTexts,
+      isMounted,
     ]
   );
-
-  const handleLanguageChange = (newLanguage: string) => {
-    if (isMounted) {
-      changeLanguage(newLanguage);
-    }
-  }
-
+  
   const value = useMemo(
-    () => ({ currentLanguage, changeLanguage: handleLanguageChange, isTranslating }),
-    [currentLanguage, handleLanguageChange, isTranslating]
+    () => ({ currentLanguage, changeLanguage, isTranslating }),
+    [currentLanguage, changeLanguage, isTranslating]
   );
 
   return (
