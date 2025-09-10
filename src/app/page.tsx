@@ -54,6 +54,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialState, setIsInitialState] = useState(true);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleResults = (data: {
     internships?: RankedInternshipWithDetails[];
@@ -84,11 +89,21 @@ export default function Home() {
             <div className="md:col-span-4 lg:col-span-3">
               <Card className="shadow-lg bg-card/80 backdrop-blur-lg border-white/20">
                 <CardContent className="p-6">
-                  <InternshipForm
-                    onResults={handleResults}
-                    onLoading={handleLoading}
-                    isSubmitting={isLoading}
-                  />
+                  {isClient ? (
+                    <InternshipForm
+                      onResults={handleResults}
+                      onLoading={handleLoading}
+                      isSubmitting={isLoading}
+                    />
+                  ) : (
+                    <div className="space-y-6">
+                      <Skeleton className="h-10 w-full" />
+                      <Skeleton className="h-20 w-full" />
+                      <Skeleton className="h-10 w-full" />
+                      <Skeleton className="h-10 w-full" />
+                      <Skeleton className="h-10 w-full" />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
